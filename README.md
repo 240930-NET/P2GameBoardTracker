@@ -23,6 +23,7 @@ The main entities will include:
 - **Game**: Holds game details, including title, genre, and release date.
 - **UserGameStatus**: Tracks whether a user has marked each game as “Played” or “Not Played.”
 - **Review** (stretch idea): Allows users to add comments or ratings to games.
+<span style="color:orange"><a href="https://miro.com/welcomeonboard/RXFlYkVJQWVlTnZ5a2NhMUU3NWR3N0xkU05ONlpnM0NtY291S2dOb3dqY0ZUUjlBOHBTQW5BNzVRVFJCN25aaXwzNDU4NzY0NTE2MzY1MDY3NTMyfDI=?share_link_id=840662358072">Interactive link of our Erd</a></span>
 
 ## External API
 We will use an external API for game data:
