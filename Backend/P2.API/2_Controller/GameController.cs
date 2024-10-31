@@ -11,7 +11,11 @@ public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
     public GameController(IGameService gameService) => _gameService = gameService;
-    //should be able to get all gamnes
+
+    /**
+    * GET endpoint that queries the game table for all games
+    * Returns 200(OK) + the list of games (list is empty if no games have been added)
+    */
     [HttpGet]
     public IActionResult GetAllGames()
     {
@@ -19,8 +23,13 @@ public class GameController : ControllerBase
         return Ok(games);
     }
 
-    //Should be able to get games by id
 
+    /**
+    * GET endpoint that queries the game table for a specific entry
+    * based on a game ID
+    * Returns 200(OK) + the entry in the response body if it's found
+    * Returns 404(NOT FOUND) otherwise
+    */
     [HttpGet("{id}")]
     public IActionResult GetGameById(int id)
     {
@@ -32,14 +41,22 @@ public class GameController : ControllerBase
         }
         return Ok(game);
     }
-    //should be able to get games by name (or using LIKE for approximates)
+    /**
+    * GET endpoint that queries the backlog table for entries whose name contains the given string
+    * Returns 200(OK) + a list of all the entries that match
+    */
     [HttpGet("/GetGamesByName/{name}")]
     public IActionResult GetGamesByName(string name)
     {
         var gameName = _gameService.GetGamesByName(name);
         return Ok(gameName);
     }
-    //should be able to remove a game 
+    /**
+    * DELETE endpoint that removes a game from the table
+    * Returns 200(OK) if the entry has been successfully deleted
+    * Returns 404(NOT FOUND) if the entry to be deleted doesn't exist
+    * Returns 400(BAD REQUEST) otherwise
+    */
     [HttpDelete]
     public IActionResult RemoveGame(int id)
     {
@@ -58,7 +75,11 @@ public class GameController : ControllerBase
         }
     }
 
-    //should be able to create a game
+    /**
+    * POST endpoint that creates a new game entry ot the game table
+    * Returns 200(OK) + the new entry in the response body if it's successfully created
+    * Returns 400(BAD REQUEST) otherwise
+    */
     [HttpPost]
     public IActionResult AddNewGame([FromBody] Game game)
     {
