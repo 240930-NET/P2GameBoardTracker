@@ -39,13 +39,13 @@ public class GameService : IGameService
 	{
 		_gameRepository.DeleteGame(deleteGame);
 	}
-	public Game NewGame(Game game)
+	public Game NewGame(GameDto gameDto)
 	{
-		if (string.IsNullOrEmpty(game.Name))
+		if (string.IsNullOrEmpty(gameDto.Name))
 		{
 			throw new Exception("Invalid game! Please input at least a valid game name");
 		}
-		// var game = _mapper.Map<Game>(GameDto);
+		var game = _mapper.Map<Game>(gameDto);
 		return _gameRepository.NewGame(game);
 	}
 }

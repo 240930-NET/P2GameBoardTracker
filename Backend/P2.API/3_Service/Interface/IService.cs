@@ -19,7 +19,7 @@ public interface IGameService
 
 	public IEnumerable<Game> GetGamesByName(string name);
 	public void DeleteGame(Game deleteGame);
-	public Game NewGame(Game game);
+	public Game NewGame(GameDto gameDto);
 }
 
 public interface IBacklogService{
