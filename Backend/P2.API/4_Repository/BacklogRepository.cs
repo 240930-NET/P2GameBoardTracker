@@ -10,27 +10,59 @@ public class BacklogRepository : IBacklogRepository
     public BacklogRepository(BacklogContext backlogContext) => _backlogContext = backlogContext;
 
 
-    //get specific backlog entry
-    public Backlog? GetBacklogEntry(int id, int gameId)
+    /**
+    * Finds backlog entry by userid + gameid.
+    * Updated so that it joins the backlog entry with the game entry as well
+    * for further details
+    */
+    public Object? GetBacklogEntry(int id, int gameId)
     {
-        return _backlogContext.Backlogs.Find(id, gameId);
+        return _backlogContext.Backlogs.Join(_backlogContext.Games, backlog => backlog.GameId, game => game.GameId, 
+            (backlog, game) => new
+            {
+                //whatever new details added for the backlog and game should be added here as well
+                gameId = game.GameId,
+                userId = backlog.UserId,
+                gameName = game.Name,
+                gameDescription = game.Description, 
+                completionStatus = backlog.Completed,
+                completionDate = backlog.CompletionDate
+            }).Where(x => x.gameId == gameId && x.userId == id).FirstOrDefault();
     }
-    //should be able to get a users backlog
-    public IEnumerable<Backlog> GetBacklogByUserId(int id)
+    /**
+    * Finds a user's backlog using user id
+    * Joins backlog table and game table to return a list that include the game information plus
+    * the information specific to the user's backlog regarding the game 
+    */
+    public IEnumerable<object> GetBacklogByUserId(int id)
     {
-        return _backlogContext.Backlogs
-        .Where(bl => bl.UserId == id)
-        .ToList();
-        //should figure out a way to display them as games maybe?
+        // return _backlogContext.Backlogs
+        // .Where(bl => bl.UserId == id)
+        // .ToList();
+        return _backlogContext.Backlogs.Join(_backlogContext.Games, backlog => backlog.GameId, game => game.GameId, 
+            (backlog, game) => new
+            {
+                //whatever new details added for the backlog and game should be added here as well
+                gameId = game.GameId,
+                gameName = game.Name,
+                gameDescription = game.Description, 
+                completionStatus = backlog.Completed,
+                completionDate = backlog.CompletionDate
+            }).ToList();
     }
-    //should be able to delete a game from a specific user's backlog
-    public void DeleteGameFromUserBacklog(Backlog log)
+    /**
+    * Deletes backlog entry given a backlog object given by the service
+    */
+    public void DeleteGameFromUserBacklog(int id, int gameId)
     {
+        Backlog? log = _backlogContext.Backlogs.Find(id, gameId);
         //could just find it at the beginning instead?
         _backlogContext.Backlogs.Remove(log);
         _backlogContext.SaveChanges();
     }
-    //should be able to add a new game to a user's backlog
+    /**
+    * Adds a new entry to the backlog table given a backlog object by the service
+    */
     public Backlog? AddGameToBacklog(Backlog log)
     {
         //also try and figure out a better way to just return the game itself instead?
