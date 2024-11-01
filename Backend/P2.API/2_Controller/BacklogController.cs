@@ -11,33 +11,48 @@ public class BacklogController : ControllerBase
 {
     private readonly IBacklogService _backlogService;
     public BacklogController(IBacklogService backlogService) => _backlogService = backlogService;
-    //get specific backlog entry
+    /**
+    * GET endpoint that queries the backlog table for a specific entry
+    * based on a game ID and user ID
+    * Returns 200(OK) + the entry in the response body if it's found
+    * Returns 404(NOT FOUND) otherwise
+    */
     [HttpGet("GetBacklogEntry")]
     public IActionResult GetBacklogEntry([FromQuery] int userId, [FromQuery] int gameId)
     {
-        Backlog? entry = _backlogService.GetBacklogEntry(userId, gameId);
+        Object? entry = _backlogService.GetBacklogEntry(userId, gameId);
         if(entry != null)
         {
             return Ok(entry);
         }
         return NotFound();
     }
-    //should be able to get a users backlog
+    /**
+    * GET endpoint that queries the backlog table for all the games on a user's backlog
+    * Returns 200(OK) + a list of all the games in the backlog
+    * List is empty if no games are in the backlog
+    */
     [HttpGet("{userid}")]
     public IActionResult GetUsersBacklog(int userid)
     {
         return Ok(_backlogService.GetBacklogByUserId(userid));
     }
-    //should be able to delete a game from a specific user's backlog
+    /**
+    * DELETE endpoint that checks if a specific entry exists in a user's backlog
+    * and if it does, removes it from the user's backlog.
+    * Returns 200(OK) if the entry was successfully removed
+    * Returns 404(NOT FOUND) if the entry doesn't exist
+    * Returns 400(BAD REQUEST) otherwise
+    */
     [HttpDelete("DeleteEntryFromUser")]
     public IActionResult DeleteEntryFromUser([FromQuery] int userId, [FromQuery] int gameId)
     {
         try 
         {
-            Backlog? bl = _backlogService.GetBacklogEntry(userId, gameId);
+            Object? bl = _backlogService.GetBacklogEntry(userId, gameId);
             if(bl != null)
             {
-                _backlogService.DeleteGameFromUserBacklog(bl);
+                _backlogService.DeleteGameFromUserBacklog(userId, gameId);
                 return Ok();
             }
             return NotFound();
@@ -49,7 +64,11 @@ public class BacklogController : ControllerBase
         
     }
 
-    //should be able to add a new game to a user's backlog
+    /**
+    * POST endpoint that creates a new backlog entry given a backlog object
+    * Returns 200(OK) + the new entry in the response body if it was successfully created
+    * Returns 400(BAD REQUEST) otherwise
+    */
     [HttpPost]
     public IActionResult AddGameToBacklog(Backlog backlog)
     {

@@ -23,9 +23,16 @@ public interface IGameService
 }
 
 public interface IBacklogService{
+
 	public Backlog? GetBacklogEntry(int id, int gameId);
 	public IEnumerable<Backlog> GetBacklogByUserId(int id);
 	public void DeleteGameFromUserBacklog(Backlog log);
 	public Backlog? AddGameToBacklog(Backlog log);
+
+    public Object? GetBacklogEntry(int id, int gameId);
+    public IEnumerable<object> GetBacklogByUserId(int id);
+    public void DeleteGameFromUserBacklog(int id, int gameId);
+    public Backlog? AddGameToBacklog(Backlog log);
+
 
 }
