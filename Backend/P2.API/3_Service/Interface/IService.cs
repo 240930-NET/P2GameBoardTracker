@@ -7,10 +7,14 @@ public interface IUserService
 {
 	IEnumerable<User> GetAllUsers();
 	public User? GetUserById(int id);
-	public User NewUser( UserDto user);
+	public User NewUser(UserDto user);
 	public User? GetUserByUsername(string username);
 	public void DeleteUser(User deleteUser);
 	public void EditUser(User user);
+
+	public bool VerifyPassword(string password, string passwordHash);
+	public User? AuthenticateUser(string username, string password);
+	void UpdatePassword(User user, string newPassword);
 }
 public interface IGameService
 {
@@ -22,17 +26,10 @@ public interface IGameService
 	public Game NewGame(GameDto gameDto);
 }
 
-public interface IBacklogService{
-
-	public Backlog? GetBacklogEntry(int id, int gameId);
-	public IEnumerable<Backlog> GetBacklogByUserId(int id);
-	public void DeleteGameFromUserBacklog(Backlog log);
+public interface IBacklogService
+{
+	public Object? GetBacklogEntry(int id, int gameId);
+	public IEnumerable<object> GetBacklogByUserId(int id);
+	public void DeleteGameFromUserBacklog(int id, int gameId);
 	public Backlog? AddGameToBacklog(Backlog log);
-
-    public Object? GetBacklogEntry(int id, int gameId);
-    public IEnumerable<object> GetBacklogByUserId(int id);
-    public void DeleteGameFromUserBacklog(int id, int gameId);
-    public Backlog? AddGameToBacklog(Backlog log);
-
-
 }

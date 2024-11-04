@@ -25,7 +25,7 @@ public partial class BacklogContext : DbContext
             }
         );
         modelBuilder.Entity<User>().HasData(
-            new User {UserId = 1, UserName = "Alfredo", Password = "Password"}
+            new User {UserId = 1, UserName = "Alfredo", Password = "Password",LastLoginDate = DateTime.UtcNow }
         );
         modelBuilder.Entity<Game>().HasData(
             new Game {GameId = 1, Name = "Counter-Strike 2"},

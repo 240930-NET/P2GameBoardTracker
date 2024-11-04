@@ -147,3 +147,4 @@ C:\Users\jdand\Downloads\RevatureGroupProject\P2GameBoardTracker\Backend\P2.API\
 C:\Users\jdand\Downloads\RevatureGroupProject\P2GameBoardTracker\Backend\P2.API\obj\Debug\net8.0\P2.API.genruntimeconfig.cache
 C:\Users\jdand\Downloads\RevatureGroupProject\P2GameBoardTracker\Backend\P2.API\obj\Debug\net8.0\ref\P2.API.dll
 C:\Users\jdand\Downloads\RevatureGroupProject\P2GameBoardTracker\Backend\P2.API\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\jdand\Downloads\RevatureGroupProject\P2GameBoardTracker\Backend\P2.API\bin\Debug\net8.0\BCrypt.Net-Next.dll

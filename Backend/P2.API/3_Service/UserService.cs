@@ -8,15 +8,15 @@ namespace P2.API.Service;
 public class UserService : IUserService
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IMapper _mapper; 
+	private readonly IMapper _mapper;
 
 	public UserService(IUserRepository userRepository, IMapper
-	mapper) 
+	mapper)
 	{
 		_userRepository = userRepository;
-		_mapper = mapper; 
-		
-	} 
+		_mapper = mapper;
+
+	}
 
 	public IEnumerable<User> GetAllUsers()
 	{
@@ -28,13 +28,17 @@ public class UserService : IUserService
 		return _userRepository.GetUserById(id);
 	}
 
-	public User NewUser(UserDto userDto){
-		if(userDto.UserName != null && userDto.Password != null)
+	public User NewUser(UserDto userDto)
+	{
+		if (userDto.UserName != null && userDto.Password != null)
 		{
 			var user = _mapper.Map<User>(userDto);
+			user.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+			
 			return _userRepository.NewUser(user);
 		}
-		else{
+		else
+		{
 			throw new Exception("Invalid user! Please input a username and password");
 		}
 	}
@@ -52,5 +56,28 @@ public class UserService : IUserService
 	public void EditUser(User user)
 	{
 		_userRepository.EditUser(user);
+	}
+
+	public User? AuthenticateUser(string username, string password)
+	{
+		var user =
+		_userRepository.GetUserByUsername(username);
+		if (user != null && VerifyPassword(password, user.Password))
+		{
+			return user;
+
+		}
+		return null;
+	}
+
+	public bool VerifyPassword(string password, string passwordHash
+	)
+	{
+		return BCrypt.Net.BCrypt.Verify(password,passwordHash);
+	}
+	
+	public void UpdatePassword(User user, string newPassword) { 
+		user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword); 
+		_userRepository.EditUser(user); 
 	}
 }
