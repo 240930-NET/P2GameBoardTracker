@@ -1,11 +1,17 @@
+using System.Text.Json.Serialization;
 namespace P2.API.Model;
 
 public class Game {
+    [JsonPropertyName("id")]
     public int GameId{get; set;}
 
-    //add steamid somewhere in here as well once interaction with the external API starts + playtime and img from steam api
+    [JsonPropertyName("name")]
     public required string Name{get;set;}
+
+    [JsonPropertyName("summary")]
     public string Description{get;set;} = "";
+    [JsonPropertyName("total_rating")]
+    public double Rating{get;set;} = 0.0;
 
 
 }

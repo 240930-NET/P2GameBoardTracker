@@ -15,9 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 //addscoped
 //addscoped
 // Console.WriteLine(builder.Configuration.GetConnectionString("P2"));
-builder.Services.AddDbContext<BacklogContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GameBoardTracker")));
-
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddDbContext<BacklogContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("P1")));
+builder.Services.AddHttpClient<IGDBService>(client =>
+{
+	client.BaseAddress = new Uri("https://api.igdb.com/v4/");
+});
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameService, GameService>();

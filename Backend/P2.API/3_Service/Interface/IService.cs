@@ -20,14 +20,10 @@ public interface IGameService
 	public IEnumerable<Game> GetGamesByName(string name);
 	public void DeleteGame(Game deleteGame);
 	public Game NewGame(GameDto gameDto);
+	public IEnumerable<Game> TestApi(string name);
 }
 
 public interface IBacklogService{
-
-	public Backlog? GetBacklogEntry(int id, int gameId);
-	public IEnumerable<Backlog> GetBacklogByUserId(int id);
-	public void DeleteGameFromUserBacklog(Backlog log);
-	public Backlog? AddGameToBacklog(Backlog log);
 
     public Object? GetBacklogEntry(int id, int gameId);
     public IEnumerable<object> GetBacklogByUserId(int id);

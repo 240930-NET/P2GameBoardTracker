@@ -4675,19 +4675,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jdand\\.nuget\\packages\\": {}
+    "C:\\Users\\Someo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jdand\\Downloads\\RevatureGroupProject\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
+      "projectUniqueName": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
       "projectName": "P2.API",
-      "projectPath": "C:\\Users\\jdand\\Downloads\\RevatureGroupProject\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
-      "packagesPath": "C:\\Users\\jdand\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jdand\\Downloads\\RevatureGroupProject\\P2GameBoardTracker\\Backend\\P2.API\\obj\\",
+      "projectPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
+      "packagesPath": "C:\\Users\\Someo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jdand\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Someo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -4768,7 +4768,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
