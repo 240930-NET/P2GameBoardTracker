@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj": {}
+    "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P1\\P1.API\\P1.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj": {
+    "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P1\\P1.API\\P1.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
-        "projectName": "P2.API",
-        "projectPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\P2.API.csproj",
+        "projectUniqueName": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P1\\P1.API\\P1.API.csproj",
+        "projectName": "P1.API",
+        "projectPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P1\\P1.API\\P1.API.csproj",
         "packagesPath": "C:\\Users\\Someo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P2GameBoardTracker\\Backend\\P2.API\\obj\\",
+        "outputPath": "C:\\Users\\Someo\\Documents\\.NET Training\\local code\\P1\\P1.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Someo\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -70,10 +70,6 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
-            },
-            "automapper": {
-              "target": "Package",
-              "version": "[13.0.1, )"
             }
           },
           "imports": [
