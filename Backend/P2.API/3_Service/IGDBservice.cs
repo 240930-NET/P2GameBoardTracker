@@ -64,28 +64,14 @@ public class IGDBService {
         Console.WriteLine($"Client ID: {clientId}");
         Console.WriteLine($"Authorization: Bearer {token}");
         //IGDB API gets info... by using post?
+        //also figure out how to get the actual link, it's very convoluted
+        //ADD WAYS TO FILTER BY GENRE AND PLATFORM IF PROVIDED
         string rawString = $"fields id, name, summary, total_rating; limit 10; search \"{name}\";";
         var response =  _httpClient.PostAsync("games", new StringContent(rawString, Encoding.UTF8, "text/plain")).Result;
         Console.WriteLine(response.ToString());
         response.EnsureSuccessStatusCode();
         var jsonString = response.Content.ReadAsStringAsync().Result;
         var games = JsonSerializer.Deserialize<List<Game>>(jsonString);
-        // var games = new List<Game>();
-        //     using (JsonDocument doc = JsonDocument.Parse(jsonString))
-        //     {
-        //         if (doc.RootElement.TryGetProperty("body", out JsonElement results))
-        //         {
-        //             foreach (var game in results.EnumerateArray())
-        //             {
-        //                 int id = game.GetProperty("id").GetInt32();
-        //                 string gameName = game.GetProperty("name").GetString();
-        //                 games.Add(new Game {
-        //                     GameId = id, 
-        //                     Name = gameName
-        //                 });
-        //             }
-        //         }             
-        // }
         return games;
     }
 }

@@ -14,11 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("P2.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a78d5425754ae1dc1deb14f7995262dbda723724")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+daf49efd6f75d11d3538ba8c7f9e09015cdc28e7")]
->>>>>>> 0c2eb7b (Integrated external API)
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59190c1915571c3c0d09d28c64962ec2f5c9fe1d")]
 [assembly: System.Reflection.AssemblyProductAttribute("P2.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("P2.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
