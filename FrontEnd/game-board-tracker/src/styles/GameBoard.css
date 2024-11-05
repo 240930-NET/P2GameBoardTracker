@@ -1,33 +1,113 @@
 /* GameBoard.css */
+
 .game-board {
     padding: 20px;
-}
-
-.game-grid {
+  }
+  
+  .game-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
-}
-
-.game-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #f9f9f9;
+  }
+  
+  .game-card {
+    width: 200px;
+    height: 264px;
+    perspective: 1000px; /* Creates depth for 3D effect */
+    cursor: pointer;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+  }
+  
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    border-radius: 12px; /* Rounded corners for the card */
+  }
+  
+  .card-inner.flipped {
+    transform: rotateY(180deg); /* Flips the card when clicked */
+  }
+  
+  /* Front and back of the card */
+  .card-front,
+  .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-}
-
-.game-image {
+    background-color: #ffffff; /* Light gray padding background */
+    padding: 5px; /* Padding around the image */
+    box-sizing: border-box;
+  }
+  
+  .card-front {
+    background-color: #ffffff;
+  }
+  
+  /* Game image with rounded corners inside padding */
+  .game-image {
     width: 100%;
     height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-.game-card h3 {
-    margin: 10px 0 5px;
-}
-
-.game-card p {
-    margin: 5px 0;
-}
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  /* Back side of the card with name, description, and rating */
+  .card-back {
+    transform: rotateY(180deg); /* Starts flipped to be on the back */
+  }
+  
+  .card-back h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .card-back p {
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin-top: 8px;
+  }
+  
+  /* Delete button styles */
+  .delete-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: none;
+    background: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: none; /* Hide button by default */
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s ease, padding 0.3s ease; /* Animate width and padding */
+  }
+  
+  /* Show the delete button only on card hover */
+  .game-card:hover .delete-button {
+    display: flex;
+  }
+  
+  /* Expanded delete button for confirmation */
+  .delete-button.confirming {
+    width: 60px; /* Expanded width for confirmation */
+    padding: 0 10px; /* Extra padding for "Delete?" text */
+    border-radius: 20px; /* Slightly less rounded for the oval shape */
+    font-size: 12px;
+    justify-content: center;
+  }
+  
