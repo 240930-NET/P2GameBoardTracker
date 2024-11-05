@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using P2.API.Data;
 
@@ -11,9 +12,11 @@ using P2.API.Data;
 namespace P2.API.Migrations
 {
     [DbContext(typeof(BacklogContext))]
-    partial class BacklogContextModelSnapshot : ModelSnapshot
+    [Migration("20241105143416_changedimageurl")]
+    partial class changedimageurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,9 +63,9 @@ namespace P2.API.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "summary");
 
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ImageURLId")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "image_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -82,7 +85,7 @@ namespace P2.API.Migrations
                         {
                             GameId = 1,
                             Description = "",
-                            ImageURL = "",
+                            ImageURLId = 0,
                             Name = "Sample Fake game",
                             Rating = 0.0
                         },
@@ -90,7 +93,7 @@ namespace P2.API.Migrations
                         {
                             GameId = 2,
                             Description = "Investigating a letter from his late wife, James returns to where they made so many memories - Silent Hill.",
-                            ImageURL = "",
+                            ImageURLId = 0,
                             Name = "Sample Fake Game 2",
                             Rating = 0.0
                         });
