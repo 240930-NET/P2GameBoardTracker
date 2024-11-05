@@ -44,13 +44,15 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #ffffff; /* Light gray padding background */
-    padding: 5px; /* Padding around the image */
+    padding: 5px;
     box-sizing: border-box;
-  }
   
-  .card-front {
-    background-color: #ffffff;
+    /* Background texture */
+    background-image: url("https://www.transparenttextures.com/patterns/diamond-eyes.png"); /* Adjust the path as needed */
+    background-size: 40px 60px; /* Cover the card */
+    background-repeat: repeat; /* Prevent tiling */
+    background-blend-mode: add; /* Blend with background color */
+    background-color: #ffffff; /* Base color of the card */
   }
   
   /* Game image with rounded corners inside padding */
