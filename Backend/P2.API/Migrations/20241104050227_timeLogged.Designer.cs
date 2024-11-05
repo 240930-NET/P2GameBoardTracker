@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using P2.API.Data;
 
@@ -11,9 +12,11 @@ using P2.API.Data;
 namespace P2.API.Migrations
 {
     [DbContext(typeof(BacklogContext))]
-    partial class BacklogContextModelSnapshot : ModelSnapshot
+    [Migration("20241104050227_timeLogged")]
+    partial class timeLogged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,27 +55,18 @@ namespace P2.API.Migrations
             modelBuilder.Entity("P2.API.Model.Game", b =>
                 {
                     b.Property<int>("GameId")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GameId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "summary");
-
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "cover");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float")
-                        .HasAnnotation("Relational:JsonPropertyName", "total_rating");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GameId");
 
@@ -83,17 +77,13 @@ namespace P2.API.Migrations
                         {
                             GameId = 1,
                             Description = "",
-                            ImageURL = "",
-                            Name = "Sample Fake game",
-                            Rating = 0.0
+                            Name = "Counter-Strike 2"
                         },
                         new
                         {
                             GameId = 2,
                             Description = "Investigating a letter from his late wife, James returns to where they made so many memories - Silent Hill.",
-                            ImageURL = "",
-                            Name = "Sample Fake Game 2",
-                            Rating = 0.0
+                            Name = "Silent Hill 2"
                         });
                 });
 

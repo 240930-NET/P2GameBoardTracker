@@ -1,4 +1,5 @@
 **/bin/
 **/obj/
-**/TestResults/
-**/coveragereport/
+*.dll
+*.exe
+*.pdb

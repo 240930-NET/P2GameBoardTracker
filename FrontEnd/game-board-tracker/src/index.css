@@ -1,0 +1,14 @@
+/* index.css or App.css */
+html, body {
+  margin: 0;          /* Remove default margin */
+  padding: 0;         /* Remove default padding */
+  width: 100%;        /* Ensure body takes full width */
+  height: 100%;       /* Optional: Ensure body takes full height */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Inherit box-sizing from body */
+}

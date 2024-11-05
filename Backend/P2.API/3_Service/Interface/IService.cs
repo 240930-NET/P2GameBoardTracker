@@ -7,10 +7,14 @@ public interface IUserService
 {
 	IEnumerable<User> GetAllUsers();
 	public User? GetUserById(int id);
-	public User NewUser( UserDto user);
+	public User NewUser(UserDto user);
 	public User? GetUserByUsername(string username);
 	public void DeleteUser(User deleteUser);
 	public void EditUser(User user);
+
+	public bool VerifyPassword(string password, string passwordHash);
+	public User? AuthenticateUser(string username, string password);
+	void UpdatePassword(User user, string newPassword);
 }
 public interface IGameService
 {
