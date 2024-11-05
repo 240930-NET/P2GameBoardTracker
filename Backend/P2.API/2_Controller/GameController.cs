@@ -10,7 +10,6 @@ using P2.API.Model.DTO;
 [ApiController]
 public class GameController : ControllerBase
 {
-
 	private readonly IGameService _gameService;
 	public GameController(IGameService gameService) => _gameService = gameService;
 
