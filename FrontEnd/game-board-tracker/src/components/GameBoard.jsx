@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GameCard from './GameCard';
-import './GameBoard.css'; // Importing all relevant CSS here
+import '../styles/GameBoard.css'; // Importing all relevant CSS here
 
 const GameBoard = () => {
     const [games, setGames] = useState([]);
