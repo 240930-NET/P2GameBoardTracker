@@ -24,12 +24,15 @@ public interface IGameService
 	public IEnumerable<Game> GetGamesByName(string name);
 	public void DeleteGame(Game deleteGame);
 	public Game NewGame(GameDto gameDto);
+	public IEnumerable<Game> TestApi(string name);
 }
 
-public interface IBacklogService
-{
-	public Object? GetBacklogEntry(int id, int gameId);
-	public IEnumerable<object> GetBacklogByUserId(int id);
-	public void DeleteGameFromUserBacklog(int id, int gameId);
-	public Backlog? AddGameToBacklog(Backlog log);
+public interface IBacklogService{
+
+    public Object? GetBacklogEntry(int id, int gameId);
+    public IEnumerable<object> GetBacklogByUserId(int id);
+    public void DeleteGameFromUserBacklog(int id, int gameId);
+    public Backlog? AddGameToBacklog(Backlog log);
+
+
 }

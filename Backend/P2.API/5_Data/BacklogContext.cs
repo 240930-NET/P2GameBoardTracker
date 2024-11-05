@@ -21,15 +21,16 @@ public partial class BacklogContext : DbContext
         modelBuilder.Entity<Game>(e =>
             {
              e.Property(e => e.GameId)
-             .ValueGeneratedOnAdd();
+                .ValueGeneratedNever();
+            //  .ValueGeneratedOnAdd();
             }
         );
         modelBuilder.Entity<User>().HasData(
             new User {UserId = 1, UserName = "Alfredo", Password = "Password",LastLoginDate = DateTime.UtcNow }
         );
         modelBuilder.Entity<Game>().HasData(
-            new Game {GameId = 1, Name = "Counter-Strike 2"},
-            new Game {GameId = 2, Name = "Silent Hill 2", Description = "Investigating a letter from his late wife, James returns to where they made so many memories - Silent Hill."}
+            new Game {GameId = 1, Name = "Sample Fake game"},
+            new Game {GameId = 2, Name = "Sample Fake Game 2", Description = "Investigating a letter from his late wife, James returns to where they made so many memories - Silent Hill."}
         );
         modelBuilder.Entity<Backlog>().HasData(
             new Backlog {UserId = 1, GameId = 1, Completed = false}

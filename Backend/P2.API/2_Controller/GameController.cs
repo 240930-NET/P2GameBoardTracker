@@ -12,6 +12,7 @@ public class GameController : ControllerBase
 {
 	private readonly IGameService _gameService;
 	public GameController(IGameService gameService) => _gameService = gameService;
+
 	//should be able to get all gamnes
 	[HttpGet]
 	public IActionResult GetAllGames()
@@ -75,6 +76,13 @@ public class GameController : ControllerBase
 			return BadRequest("Could not create game");
 		}
 	}
+	[HttpGet("/GetGamesByName/test/{name}")]
+	public IActionResult GetGamesByNameTest(string name)
+	{
+		var games = _gameService.TestApi(name);
+		return Ok(games);
+	}
+    
 
 	//for now, should be able to edit a game (but if it's solely steam api, this should not be the case)
 
