@@ -12,13 +12,15 @@ public class GameService : IGameService
 {
 	private readonly IGameRepository _gameRepository;
 	private readonly IMapper _mapper;
+	private readonly IGDBService _igdbService;
 
 	public GameService(IGameRepository gameRepository, IMapper
-	mapper)
+	mapper, IGDBService igdbService)
 	{
 		_gameRepository = gameRepository;
 
 		_mapper = mapper;
+		_igdbService = igdbService;
 
 	}
 	public IEnumerable<Game> GetAllGames()
@@ -33,7 +35,20 @@ public class GameService : IGameService
 
 	public IEnumerable<Game> GetGamesByName(string name)
 	{
-		return _gameRepository.GetGamesByName(name);
+		List<Game> games = _gameRepository.GetGamesByName(name).ToList();
+		if(games.Count == 0)
+		{
+			//if we don't have it saved:
+			//fetch from API
+			games = _igdbService.GetGamesByName(name);
+			//save to our database:
+			foreach(Game game in games)
+			{
+				_gameRepository.NewGame(game);
+			}
+		}
+		//return games either way
+		return games;
 	}
 	public void DeleteGame(Game deleteGame)
 	{
@@ -47,5 +62,9 @@ public class GameService : IGameService
 		}
 		var game = _mapper.Map<Game>(gameDto);
 		return _gameRepository.NewGame(game);
+	}
+	public IEnumerable<Game> TestApi(string name)
+	{
+		return _igdbService.GetGamesByName(name); 
 	}
 }
