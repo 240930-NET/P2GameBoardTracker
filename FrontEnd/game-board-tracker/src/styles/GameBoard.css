@@ -62,7 +62,6 @@
     height: auto;
     border-radius: 8px;
     object-fit: cover;
-    user-drag: none; /* For WebKit browsers */
     -webkit-user-drag: none; /* For Safari and Chrome */
   }
   
