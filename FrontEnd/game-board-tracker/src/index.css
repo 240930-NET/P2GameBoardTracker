@@ -12,3 +12,7 @@ html, body {
 *::after {
   box-sizing: inherit; /* Inherit box-sizing from body */
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
