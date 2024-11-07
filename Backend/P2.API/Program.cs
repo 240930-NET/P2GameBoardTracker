@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<BacklogContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("P1")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GameBoardTracker")));
 builder.Services.AddHttpClient<IGDBService>(client =>
 {
     client.BaseAddress = new Uri("https://api.igdb.com/v4/");
@@ -44,7 +44,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
         builder => builder
-            .WithOrigins("http://localhost:3000") // Adjust this to your React app's URL
+            .WithOrigins("http://localhost:5173") // Adjust this to your React app's URL
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
