@@ -71,4 +71,4 @@ jobs:
         with:
           app-name: 'gameBoardTracker'
           slot-name: 'Production' # Change if you're not using slots.
-          package: '${{ github.workspace }}/myapp/myapp.zip' # Adjust based on whether you zipped it.
+          package: '${{ github.workspace }}\myapp\myapp.zip' # Adjust based on whether you zipped it.
