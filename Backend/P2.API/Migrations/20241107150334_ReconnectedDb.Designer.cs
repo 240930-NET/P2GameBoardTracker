@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using P2.API.Data;
 
@@ -11,9 +12,11 @@ using P2.API.Data;
 namespace P2.API.Migrations
 {
     [DbContext(typeof(BacklogContext))]
-    partial class BacklogContextModelSnapshot : ModelSnapshot
+    [Migration("20241107150334_ReconnectedDb")]
+    partial class ReconnectedDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
