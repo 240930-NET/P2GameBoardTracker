@@ -64,7 +64,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }} # Ensure this secret is set
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }} # Ensure this secret is set
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }} # Ensure this secret is set
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # If using a secret
+          # client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # If using a secret
 
       - name: Deploy to Azure Web App (ensure correct package path)
         id: deploy-to-webapp
