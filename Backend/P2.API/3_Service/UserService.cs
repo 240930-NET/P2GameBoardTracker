@@ -30,9 +30,9 @@ public class UserService : IUserService
 
 	public User NewUser(UserDto userDto)
 	{
-		if (userDto.UserName != null && userDto.Password != null)
+		if (!string.IsNullOrEmpty(userDto.UserName) && !string.IsNullOrEmpty(userDto.Password))
 		{
-			var user = _mapper.Map<User>(userDto);
+			User user = _mapper.Map<User>(userDto);
 			user.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 			
 			return _userRepository.NewUser(user);

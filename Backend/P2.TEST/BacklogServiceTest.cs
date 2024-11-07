@@ -44,15 +44,45 @@ public class BacklogServiceTest
         //Assert
         Assert.Null(backlogService.GetBacklogEntry(3, 3));
     }
+    [Fact]
+    public void GetBacklogEntryById()
+    {
 
+        List<Backlog> backlogs = [new Backlog{UserId = 1, GameId = 1, Completed = false},
+        new Backlog{UserId = 1, GameId = 2, Completed = true}, 
+        new Backlog{UserId = 2, GameId = 2, Completed = true}];
+        List<Backlog> backlogsUser1 = [new Backlog{UserId = 1, GameId = 1, Completed = false},
+        new Backlog{UserId = 1, GameId = 2, Completed = true}];
+
+        mockRepo.Setup(repo => repo.GetBacklogByUserId(It.IsAny<int>()))
+            .Returns(backlogsUser1);
+
+        var result = backlogService.GetBacklogByUserId(1);
+        Assert.Equal(result, backlogsUser1);
+    }
+
+    [Fact]
+    public void NewBacklogEntrySuccessful()
+    {
+        List<Backlog> backlogs = [];
+        Backlog bl = new Backlog{UserId = 1, GameId = 1, Completed = false};
+        mockRepo.Setup(repo => repo.AddGameToBacklog(It.IsAny<Backlog>()))
+            .Callback(() => backlogs.Add(bl))
+            .Returns(bl);
+        var result = backlogService.AddGameToBacklog(bl);
+
+        Assert.False(backlogs.IsNullOrEmpty());
+        Assert.Equal(result.UserId, 1);
+        Assert.Equal(result.GameId, 1);
+    }
     [Fact]
     public void DeleteBacklogEntry()
     {
         //TODO:
         List<Backlog> backlogs = [new Backlog{UserId = 1, GameId = 1, Completed = false},
         new Backlog{UserId = 1, GameId = 2, Completed = true}];
-        mockRepo.Setup(repo => repo.DeleteGameFromUserBacklog(It.IsAny<Backlog>()));
-        backlogService.DeleteGameFromUserBacklog(backlogService.GetBacklogEntry(1, 1));
+        mockRepo.Setup(repo => repo.DeleteGameFromUserBacklog(It.IsAny<int>(), It.IsAny<int>()));
+        backlogService.DeleteGameFromUserBacklog(1, 1);
         // Assert.DoesNotContain(gameList, u => u.gameName.Equals("deleteThis"));
     }
 }

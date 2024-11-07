@@ -35,3 +35,7 @@ public interface IBacklogService{
 
 
 }
+
+public interface IIGDBService{
+	public List<Game> GetGamesFiltered(string name, List<int>? genres = null, List<int>? platforms = null, int limit = 1);
+}
