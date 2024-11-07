@@ -43,9 +43,11 @@ public class BacklogRepository : IBacklogRepository
             (backlog, game) => new
             {
                 //whatever new details added for the backlog and game should be added here as well
-                gameId = game.GameId,
-                gameName = game.Name,
-                gameDescription = game.Description, 
+                GameId = game.GameId,
+                Name = game.Name,
+                Description = game.Description,
+                ImageUrl = game.ImageURL,
+                Rating = game.Rating, 
                 completionStatus = backlog.Completed,
                 completionDate = backlog.CompletionDate
             }).ToList();

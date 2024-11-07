@@ -167,6 +167,49 @@ public class UserServiceTest
         Assert.Null(result);
     }
 
+    [Fact]
+    public void AuthenticateUserSuccess()
+    {
+        List<User> userList = [new User {UserId = 0, UserName = "test1", Password = BCrypt.Net.BCrypt.HashPassword("password1")},
+        new User {UserId = 1, UserName = "test2", Password = "password2"}];
+
+        mockRepo.Setup(repo => repo.GetUserByUsername(It.IsAny<string>()))
+            .Returns(userList.FirstOrDefault(user => user.UserName.Equals("test1")));
+
+        //Act
+        var result = userService.AuthenticateUser("test1", "password1");
+        //Assert
+        Assert.Equal(result, userList[0]);
+    }
+    [Fact]
+    public void AuthenticateUserFail()
+    {
+        List<User> userList = [new User {UserId = 0, UserName = "test1", Password = BCrypt.Net.BCrypt.HashPassword("password1")},
+        new User {UserId = 1, UserName = "test2", Password = "password2"}];
+
+        mockRepo.Setup(repo => repo.GetUserByUsername(It.IsAny<string>()))
+            .Returns(userList.FirstOrDefault(user => user.UserName.Equals("test1")));
+
+        //Act
+        var result = userService.AuthenticateUser("test1", "passwordNot");
+        //Assert
+        Assert.Null(result);
+    }
+    [Fact]
+    public void UpdatePassword()
+    {
+        User testUser = new User {UserId = 1, UserName = "test2", Password = "password2"};
+
+        mockRepo.Setup(repo => repo.GetUserByUsername(It.IsAny<string>()))
+            .Returns(testUser);
+
+        //Act
+        userService.UpdatePassword(testUser, "password1"); 
+        var result = userService.AuthenticateUser("test1", "password1");
+        //Assert
+        Assert.Equal(result, testUser);
+    }
+
     //LOGIC FOR CHECKING THIS ONE IS ON CONTROLLER AS WELL
     //Editing itself is also in controller so this is hard to test...
     // [Fact]
