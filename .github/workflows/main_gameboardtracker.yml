@@ -1,11 +1,12 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy ASP.Net Core app to Azure Web App - gameBoardTracker
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'Backend/P2.API/**'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +14,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
@@ -23,7 +25,7 @@ jobs:
       - name: Build with dotnet
         run: dotnet build Backend/P2.API/P2.API.csproj --configuration Release
 
-      - name: dotnet publish
+      - name: Publish with dotnet
         run: dotnet publish Backend/P2.API/P2.API.csproj -c Release -o "${{ env.DOTNET_ROOT }}/myapp"
 
       - name: Zip published output (if needed)
@@ -34,8 +36,8 @@ jobs:
       - name: Upload zipped artifact for deployment job (if zipped)
         uses: actions/upload-artifact@v4
         with:
-          name: myapp-zip # Change this if not zipping.
-          path: ${{ env.DOTNET_ROOT }}/myapp/myapp.zip # Adjust if needed.
+          name: myapp-zip
+          path: ${{ env.DOTNET_ROOT }}/myapp/myapp.zip
 
   deploy:
     runs-on: windows-latest
@@ -50,14 +52,14 @@ jobs:
       - name: Download artifact from build job (adjusted)
         uses: actions/download-artifact@v4
         with:
-          name: myapp-zip # Change this if not zipping.
+          name: myapp-zip
 
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }} # Ensure this secret is set
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }} # Ensure this secret is set
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }} # Ensure this secret is set
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # If using a secret
 
       - name: Deploy to Azure Web App (ensure correct package path)
