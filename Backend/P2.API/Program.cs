@@ -9,6 +9,22 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
+var connectionString = builder.Configuration.GetConnectionString("GameBoardTracker");
+Console.WriteLine($"Connection string: {connectionString}"); // Add this line for debugging
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'GameBoardTracker' not found.");
+}
+
+builder.Services.AddDbContext<BacklogContext>(options => 
+    options.UseSqlServer(connectionString));
+
 // Add services to the container.
 builder.Services.AddDbContext<BacklogContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("GameBoardTracker")));
@@ -64,7 +80,6 @@ builder.Services.AddAuthentication("CustomCookieAuth")
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -87,5 +102,7 @@ app.UseSession();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
+
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
