@@ -50,14 +50,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_94E44233B85E4795909205EFE20ACE6E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A2EC223930A042F6B169019A5DB01640 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D6BD47EEF9944D00825AC9EF9E2ACA31 }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # Ensure this secret is also set if required
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'gameBoardTracker'
-          slot-name: 'Production'
-          package: ${{ github.workspace }}/${{ env.DOTNET_ROOT }}/myapp # Ensure this path is correct.
+          slot-name: 'Production' # Change this if you're not using slots
+          package: ${{ github.workspace }}/${{ env.DOTNET_ROOT }}/myapp # Ensure this path is correct
