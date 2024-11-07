@@ -79,7 +79,7 @@ builder.Services.AddAuthentication("CustomCookieAuth")
     });
 
 var app = builder.Build();
-
+// got rid of swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
