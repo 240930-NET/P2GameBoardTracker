@@ -24,7 +24,6 @@ public interface IGameService
 	public IEnumerable<Game> GetGamesByName(string name);
 	public void DeleteGame(Game deleteGame);
 	public Game NewGame(GameDto gameDto);
-	public IEnumerable<Game> TestApi(string name);
 }
 
 public interface IBacklogService{
@@ -35,4 +34,8 @@ public interface IBacklogService{
     public Backlog? AddGameToBacklog(Backlog log);
 
 
+}
+
+public interface IIGDBService{
+	public List<Game> GetGamesFiltered(string name, List<int>? genres = null, List<int>? platforms = null, int limit = 1);
 }

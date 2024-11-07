@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using P2.API.Data;
 
@@ -11,9 +12,11 @@ using P2.API.Data;
 namespace P2.API.Migrations
 {
     [DbContext(typeof(BacklogContext))]
-    partial class BacklogContextModelSnapshot : ModelSnapshot
+    [Migration("20241105145547_finalUrlChange")]
+    partial class finalUrlChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,9 +107,6 @@ namespace P2.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<DateTime>("LastLoginDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -123,7 +123,6 @@ namespace P2.API.Migrations
                         new
                         {
                             UserId = 1,
-                            LastLoginDate = new DateTime(2024, 11, 7, 15, 3, 30, 578, DateTimeKind.Utc).AddTicks(4540),
                             Password = "Password",
                             UserName = "Alfredo"
                         });

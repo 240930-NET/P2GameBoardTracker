@@ -40,7 +40,7 @@ public class GameService : IGameService
 		{
 			//if we don't have it saved:
 			//fetch from API
-			games = _igdbService.GetGamesByName(name);
+			games = _igdbService.GetGamesFiltered(name);
 			//save to our database:
 			foreach(Game game in games)
 			{
@@ -62,9 +62,5 @@ public class GameService : IGameService
 		}
 		var game = _mapper.Map<Game>(gameDto);
 		return _gameRepository.NewGame(game);
-	}
-	public IEnumerable<Game> TestApi(string name)
-	{
-		return _igdbService.GetGamesByName(name); 
 	}
 }
