@@ -30,9 +30,10 @@ jobs:
 
       - name: Zip published output (if needed)
         run: |
-          cd "${{ env.DOTNET_ROOT }}\myapp"
-          if (Test-Path .) {
-            zip -r myapp.zip .
+          $source = "${{ env.DOTNET_ROOT }}\myapp"
+          $zipFile = "${{ env.DOTNET_ROOT }}\myapp.zip"
+          if (Test-Path $source) {
+            Compress-Archive -Path "$source\*" -DestinationPath $zipFile
           } else {
             Write-Host "Directory does not exist."
           }
@@ -41,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: myapp-zip
-          path: "${{ env.DOTNET_ROOT }}/myapp/myapp.zip"
+          path: "${{ env.DOTNET_ROOT }}\myapp.zip"
 
   deploy:
     runs-on: windows-latest
@@ -71,4 +72,4 @@ jobs:
         with:
           app-name: 'gameBoardTracker'
           slot-name: 'Production' # Change if you're not using slots.
-          package: '${{ github.workspace }}\myapp\myapp.zip' # Adjust based on whether you zipped it.
+          package: '${{ github.workspace }}\myapp.zip' # Adjust based on whether you zipped it.
