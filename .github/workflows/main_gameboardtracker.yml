@@ -26,18 +26,22 @@ jobs:
         run: dotnet build Backend/P2.API/P2.API.csproj --configuration Release
 
       - name: Publish with dotnet
-        run: dotnet publish Backend/P2.API/P2.API.csproj -c Release -o "${{ env.DOTNET_ROOT }}/myapp"
+        run: dotnet publish Backend/P2.API/P2.API.csproj -c Release -o "${{ env.DOTNET_ROOT }}\myapp"
 
       - name: Zip published output (if needed)
         run: |
-          cd ${{ env.DOTNET_ROOT }}/myapp
-          zip -r myapp.zip .
+          cd "${{ env.DOTNET_ROOT }}\myapp"
+          if (Test-Path .) {
+            zip -r myapp.zip .
+          } else {
+            Write-Host "Directory does not exist."
+          }
 
       - name: Upload zipped artifact for deployment job (if zipped)
         uses: actions/upload-artifact@v4
         with:
           name: myapp-zip
-          path: ${{ env.DOTNET_ROOT }}/myapp/myapp.zip
+          path: "${{ env.DOTNET_ROOT }}\myapp\myapp.zip"
 
   deploy:
     runs-on: windows-latest
