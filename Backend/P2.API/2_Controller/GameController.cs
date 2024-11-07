@@ -76,13 +76,6 @@ public class GameController : ControllerBase
 			return BadRequest("Could not create game");
 		}
 	}
-	[HttpGet("/GetGamesByName/test/{name}")]
-	public IActionResult GetGamesByNameTest(string name)
-	{
-		var games = _gameService.TestApi(name);
-		return Ok(games);
-	}
-    
 
 	//for now, should be able to edit a game (but if it's solely steam api, this should not be the case)
 

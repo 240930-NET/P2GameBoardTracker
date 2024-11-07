@@ -1,19 +1,41 @@
 using P2.API.Service;
 using P2.API.Data;
 using P2.API.Model;
+using P2.API.Model.DTO;
 using P2.API.Repository;
 using Moq;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
+using Microsoft.Extensions.Configuration;
 namespace P2.TEST;
 
 public class GameServiceTest
 {
     private Mock<IGameRepository> mockRepo;
     private GameService  gameService;
+    private readonly Mock<IMapper> _mockedMapper;
+    private readonly  Mock<IGDBService> mockIGDBService;
     public GameServiceTest()
     {
+        //mock igdbservice for this and user test and then have an actual unit test class for the proper external api calls
         mockRepo = new();
-        gameService = new(mockRepo.Object);
+        _mockedMapper = new Mock<IMapper>();
+        var secrets = new Dictionary<string, string>
+        {
+            { "IGDB:id", "mockid" },
+            { "IGDB:secret", "mocksecret" }
+        };
+        IConfiguration mockConfiguration = new ConfigurationBuilder()
+            .AddInMemoryCollection(secrets)
+            .Build();
+
+        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        var mockHttpClient = new HttpClient(mockHttpMessageHandler.Object)
+        {
+            BaseAddress = new Uri("https://api.igdb.com")
+        };
+        mockIGDBService = new Mock<IGDBService>(mockHttpClient, mockConfiguration);
+        gameService = new(mockRepo.Object, _mockedMapper.Object, mockIGDBService.Object);
     }
 
     [Fact]
@@ -91,11 +113,12 @@ public class GameServiceTest
     public void NewGameSuccessful()
     {
         List<Game> gameList = [];
+        GameDto newgameDto = new GameDto{Name = "added"};
         Game newgame = new Game{Name = "added"};
         mockRepo.Setup(repo => repo.NewGame(It.IsAny<Game>()))
             .Callback(() => gameList.Add(newgame))
             .Returns(newgame);
-        var result = gameService.NewGame(newgame);
+        var result = gameService.NewGame(newgameDto);
 
         Assert.False(gameList.IsNullOrEmpty());
         Assert.Contains(result.Name, "added");
@@ -108,10 +131,10 @@ public class GameServiceTest
         //purposefully made null to check for exception!! Will give out warnings
         //Can they be suppressed like Java?
         Game newgame = new Game{Name = null};
+        GameDto newgameDto = new GameDto{Name = null};
         mockRepo.Setup(repo => repo.NewGame(It.IsAny<Game>()))
-            .Callback(() => gameList.Add(newgame))
-            .Returns(newgame);
-        Assert.Throws<Exception>(()=>gameService.NewGame(newgame));
+            .Callback(() => gameList.Add(newgame));
+        Assert.Throws<Exception>(()=>gameService.NewGame(newgameDto));
     }
 
     //game service does not check for invalid deletes, controller handles that logic
@@ -126,32 +149,39 @@ public class GameServiceTest
     }
 
     [Fact]
-    public void GetGamesBygamenameSuccess()
+    public void GetGamesByNameSuccess()
     {
         //THIS ONE IS VERY DIFFERENT: APPROXIMATION INSTEAD OF EXACT SEARCH
-        // List<Game> gameList = [new Game {GameId = 0, Name = "test1"},
-        // new Game {GameId = 1, Name = "test2"}];
+        List<Game> gameList = [new Game {GameId = 0, Name = "test1"},
+            new Game {GameId = 1, Name = "test2"}, new Game {GameId = 3, Name = "not"}];
+        List<Game> reducedList = [new Game {GameId = 0, Name = "test1"},
+            new Game {GameId = 1, Name = "test2"}];
+        mockRepo.Setup(repo => repo.GetGamesByName(It.IsAny<string>()))
+            .Returns(reducedList);
 
-        // mockRepo.Setup(repo => repo.GetGameSByName(It.IsAny<string>()))
-        //     .Returns(gameList.FirstOrDefault(game => game.gameName.Equals("test1")));
-
-        // //Act
-        // var result = gameService.GetgameBygamename("test1");
-        // //Assert
-        // Assert.Equal(result, gameList[0]);
+        //Act
+        var result = gameService.GetGamesByName("tes");
+        //Assert
+        Assert.Equal(result, reducedList);
     }
-    [Fact]
-    public void GetGameSByGameNameFailed()
-    {
-        // List<game> gameList = [new game {gameName = "test1", Password = "password1"},
-        // new game {gameName = "test2", Password = "password2"}];
-
-        // mockRepo.Setup(repo => repo.GetgameBygamename(It.Is<string>(u => u == "not on list")))
-        //     .Returns((game?) null);
-
-        // //Act
-        // var result = gameService.GetgameBygamename("not in list");
-        // //Assert
-        // Assert.Null(result);
-    }
+    // [Fact]
+    // public void GetGamesByNameNotInList()
+    // {
+        
+    // List<Game> emptyList = [];
+    // mockRepo.Setup(repo => repo.GetGamesByName(It.IsAny<string>()))
+    //     .Returns(emptyList);
+    // Game newGame = new Game { GameId = 1, Name = "not in list" };
+    // List<Game> gameList = new List<Game> 
+    // { 
+    //     newGame
+    // };
+    // mockIGDBService.Protected().Setup(service => service.GetGamesFiltered(It.IsAny<string>(), It.IsAny<List<int>?>(), It.IsAny<List<int>?>(), It.IsAny<int>()))
+    //     .Returns(gameList);
+    // var result = gameService.GetGamesByName("not in list");
+    // Assert.NotNull(result);
+    // Assert.NotEmpty(result); 
+    // Assert.Equal(gameList.Count, result.Count());
+    // Assert.Contains(result, g => g.Name == "not in list");
+    // }
 }

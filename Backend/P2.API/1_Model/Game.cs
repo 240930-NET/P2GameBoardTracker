@@ -13,8 +13,7 @@ public class Game {
     [JsonPropertyName("total_rating")]
     public double Rating{get;set;} = 0.0;
     
-    [JsonPropertyName("cover")]
-    public string ImageURL{get;set;} = "";
+    public string ImageURL{get;set;} ="";
 
 
 }
