@@ -8,6 +8,8 @@ import GameDetails from './components/GameDetails';
 // import SearchFilter from './components/SearchFilter';
 import Search from './components/Search';
 import Dashboard from './components/Dashboard';
+import TestCORS from './components/TestCors';
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
           <Route path='/search' element={<Search />} />
           <Route path='/profile' element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} /> {/* Add this line for the Dashboard route */}
+          <Route path="/test-cors" element={<TestCORS />} /> {/* Add this line for testing CORS */}
         </Routes>
       </Router>
     </>
