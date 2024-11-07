@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Configuration.AddUserSecrets<Program>();
+	builder.Configuration.AddUserSecrets<Program>();
 }
 
 var connectionString = builder.Configuration.GetConnectionString("GameBoardTracker");
@@ -19,18 +19,18 @@ Console.WriteLine($"Connection string: {connectionString}"); // Add this line fo
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    throw new InvalidOperationException("Connection string 'GameBoardTracker' not found.");
+	throw new InvalidOperationException("Connection string 'GameBoardTracker' not found.");
 }
 
 builder.Services.AddDbContext<BacklogContext>(options => 
-    options.UseSqlServer(connectionString));
+	options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddDbContext<BacklogContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GameBoardTracker")));
+	options.UseSqlServer(builder.Configuration.GetConnectionString("GameBoardTracker")));
 builder.Services.AddHttpClient<IGDBService>(client =>
 {
-    client.BaseAddress = new Uri("https://api.igdb.com/v4/");
+	client.BaseAddress = new Uri("https://api.igdb.com/v4/");
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -51,43 +51,45 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.IsEssential = true;
+	options.IdleTimeout = TimeSpan.FromMinutes(30);
+	options.Cookie.IsEssential = true;
 });
 
 // Configure CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
-        builder => builder
-            .WithOrigins("http://localhost:5173") // Adjust this to your React app's URL
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+	options.AddPolicy("AllowReactApp",
+		builder => builder
+			.WithOrigins("http://localhost:5173") // Adjust this to your React app's URL
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials());
 });
 
 // Configure cookie authentication
 builder.Services.AddAuthentication("CustomCookieAuth")
-    .AddCookie("CustomCookieAuth", options =>
-    {
-        options.Cookie.Name = "YourAppAuthCookie";
-        options.LoginPath = "/api/User/login";
-        options.LogoutPath = "/api/User/logout";
-        options.AccessDeniedPath = "/api/User/AccessDenied";
-        options.SlidingExpiration = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    });
+	.AddCookie("CustomCookieAuth", options =>
+	{
+		options.Cookie.Name = "YourAppAuthCookie";
+		options.LoginPath = "/api/User/login";
+		options.LogoutPath = "/api/User/logout";
+		options.AccessDeniedPath = "/api/User/AccessDenied";
+		options.SlidingExpiration = true;
+		options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+	});
 
 var app = builder.Build();
 // got rid of swagger
+
+// again testing 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2GameBoardTracker API v1"));
+	app.UseSwagger();
+	app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2GameBoardTracker API v1"));
 }
 else
 {
-    app.UseHsts();
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
