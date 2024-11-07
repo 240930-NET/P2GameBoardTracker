@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using P2.API.Data;
 
@@ -11,9 +12,11 @@ using P2.API.Data;
 namespace P2.API.Migrations
 {
     [DbContext(typeof(BacklogContext))]
-    partial class BacklogContextModelSnapshot : ModelSnapshot
+    [Migration("20241107025547_UpdatedGameModel")]
+    partial class UpdatedGameModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +65,8 @@ namespace P2.API.Migrations
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "cover");
 
                     b.Property<string>("Name")
                         .IsRequired()

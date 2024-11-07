@@ -47,7 +47,6 @@ public class UserController : ControllerBase
 	}
 
 	[HttpPost]
-
 	// changed type to userDTO because id autoimplements anyway 
 	public IActionResult AddNewUser([FromBody] UserDto userDto)
 	{
@@ -59,6 +58,34 @@ public class UserController : ControllerBase
 		catch (Exception)
 		{
 			return BadRequest("Could not add user");
+		}
+	}
+
+	[HttpPost("register")]
+	public async Task<IActionResult> Register([FromBody] UserDto registrationDto)
+	{
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+
+		try
+		{
+			var existingUser = _userService.GetUserByUsername(registrationDto.UserName);
+			if (existingUser != null)
+			{
+				return Conflict("Username already exists");
+			}
+
+			var newUser = _userService.NewUser(registrationDto);
+			await UserSessionAndAuth(newUser);
+
+			return CreatedAtAction(nameof(GetUserById), new { id = newUser.UserId }, CreateUserDataToReturn(newUser));
+		}
+		catch (Exception ex)
+		{
+			// Log the exception
+			return StatusCode(500, "An error occurred while registering the user");
 		}
 	}
 
@@ -81,7 +108,6 @@ public class UserController : ControllerBase
 			return BadRequest("Could not delete user");
 		}
 	}
-
 
 	//Body in swagger should be something like:
 	//     [
@@ -117,7 +143,6 @@ public class UserController : ControllerBase
 
 	// Authenticates the user and creates a session 
 	[HttpPost("login")]
-
 	public async Task<IActionResult> Login([FromBody] UserDto loginDto)
 	{
 		var user = _userService.AuthenticateUser(loginDto.UserName, loginDto.Password);
@@ -134,11 +159,9 @@ public class UserController : ControllerBase
 		// set up the session and auth 
 		await UserSessionAndAuth(user);
 
-
 		return Ok(new { message = "Login Successful", userName = CreateUserDataToReturn(user) });
-
-
 	}
+
 	[HttpPost("Logout")]
 	// Logs out the current user and clears the session 
 	public async Task<IActionResult> Logout()
@@ -151,7 +174,6 @@ public class UserController : ControllerBase
 		// Delete the session cookie 
 		Response.Cookies.Delete("SessionId");
 		return Ok(new { message = "Logged out successfully" });
-
 	}
 
 	[HttpGet("current")]
@@ -199,5 +221,4 @@ public class UserController : ControllerBase
 			user.LastLoginDate
 		};
 	}
-
 }
