@@ -103,6 +103,5 @@ app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
