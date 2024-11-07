@@ -26,11 +26,16 @@ jobs:
       - name: dotnet publish
         run: dotnet publish Backend/P2.API/P2.API.csproj -c Release -o "${{ env.DOTNET_ROOT }}/myapp"
 
-      - name: Upload artifact for deployment job
+      - name: Zip published output (if needed)
+        run: |
+          cd ${{ env.DOTNET_ROOT }}/myapp
+          zip -r myapp.zip .
+
+      - name: Upload zipped artifact for deployment job (if zipped)
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{ env.DOTNET_ROOT }}/myapp
+          name: myapp-zip # Change this if not zipping.
+          path: ${{ env.DOTNET_ROOT }}/myapp/myapp.zip # Adjust if needed.
 
   deploy:
     runs-on: windows-latest
@@ -42,23 +47,91 @@ jobs:
       id-token: write # This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact from build job (adjusted)
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-      
+          name: myapp-zip # Change this if not zipping.
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_94E44233B85E4795909205EFE20ACE6E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A2EC223930A042F6B169019A5DB01640 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D6BD47EEF9944D00825AC9EF9E2ACA31 }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # Ensure this secret is also set if required
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # If using a secret
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App (ensure correct package path)
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'gameBoardTracker'
-          slot-name: 'Production' # Change this if you're not using slots
-          package: ${{ github.workspace }}/${{ env.DOTNET_ROOT }}/myapp # Ensure this path is correct
+          slot-name: 'Production' # Change if you're not using slots.
+          package: '${{ github.workspace }}/myapp/myapp.zip' # Adjust based on whether you zipped it.name: Build and deploy ASP.Net Core app to Azure Web App - gameBoardTracker
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Backend/P2.API/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Build with dotnet
+        run: dotnet build Backend/P2.API/P2.API.csproj --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish Backend/P2.API/P2.API.csproj -c Release -o "${{ env.DOTNET_ROOT }}/myapp"
+
+      - name: Zip published output (if needed)
+        run: |
+          cd ${{ env.DOTNET_ROOT }}/myapp
+          zip -r myapp.zip .
+
+      - name: Upload zipped artifact for deployment job (if zipped)
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-zip # Change this if not zipping.
+          path: ${{ env.DOTNET_ROOT }}/myapp/myapp.zip # Adjust if needed.
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write # This is required for requesting the JWT
+
+    steps:
+      - name: Download artifact from build job (adjusted)
+        uses: actions/download-artifact@v4
+        with:
+          name: myapp-zip # Change this if not zipping.
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }} # If using a secret
+
+      - name: Deploy to Azure Web App (ensure correct package path)
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'gameBoardTracker'
+          slot-name: 'Production' # Change if you're not using slots.
+          package: '${{ github.workspace }}/myapp/myapp.zip' # Adjust based on whether you zipped it.
