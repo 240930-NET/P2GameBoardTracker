@@ -72,11 +72,13 @@ public class BacklogController : ControllerBase
     [HttpPost]
     public IActionResult AddGameToBacklog(Backlog backlog)
     {
-        try{
-            
+        try
+        {
+            Console.WriteLine($"Received GameId: {backlog.GameId}");
             return Ok(_backlogService.AddGameToBacklog(backlog));
         }
-        catch(Exception){
+        catch (Exception)
+        {
             return BadRequest("Could not add entry to backlog");
         }
     }

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-const GameCard = ({ game, onDelete }) => {
+const GameCard = ({ game, addGameToBacklog }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const buttonRef = useRef();
@@ -10,15 +10,10 @@ const GameCard = ({ game, onDelete }) => {
     setIsFlipped(!isFlipped);
   };
 
-  // Handle delete button click with confirmation step
-  const handleDeleteClick = (e) => {
-    e.stopPropagation(); // Prevents flip when delete button is clicked
-    if (isConfirming) {
-      onDelete(game.gameId); // Confirm deletion on second click
-      setIsConfirming(false); // Reset to initial state
-    } else {
-      setIsConfirming(true); // Expand button on first click
-    }
+  // Handle add button click
+  const handleAddClick = (e) => {
+    e.stopPropagation(); // Prevents flip when add button is clicked
+    addGameToBacklog(game.gameId); // Call the function to add the game
   };
 
   // Reset confirmation state when mouse leaves the card
@@ -43,9 +38,9 @@ const GameCard = ({ game, onDelete }) => {
           <button
             ref={buttonRef}
             className={`delete-button ${isConfirming ? "confirming" : ""}`}
-            onClick={handleDeleteClick}
+            onClick={handleAddClick} // Call the add function on click
           >
-            {isConfirming ? "Delete?" : "−"}
+            {isConfirming ? "Add?" : "+"}
           </button>
         </div>
 
