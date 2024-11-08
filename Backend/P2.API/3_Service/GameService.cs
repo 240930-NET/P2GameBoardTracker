@@ -35,18 +35,31 @@ public class GameService : IGameService
 
 	public IEnumerable<Game> GetGamesByName(string name)
 	{
+
+		//NEW LOGIC:  Get X number of games that match the name
+		//look at our own database first, subtract the number of results, 
+		//exclude already found games from the igdb search and then search for 
+		//the remaining number of results from there
+		//For now results number will be some arbitrary number like 10
+		//just for testing purposes
 		List<Game> games = _gameRepository.GetGamesByName(name).ToList();
-		if(games.Count == 0)
+		List<Game> gamesToExclude = _gameRepository.GetAllGames().ToList();
+		int remainingGames = 10 - games.Count;
+		if(remainingGames > 0)
 		{
-			//if we don't have it saved:
-			//fetch from API
-			games = _igdbService.GetGamesFiltered(name);
-			//save to our database:
-			foreach(Game game in games)
-			{
-				_gameRepository.NewGame(game);
-			}
-		}
+			games.AddRange(_igdbService.GetGamesFiltered(name, gamesToExclude, null, null, 10));
+		} 
+		// if(games.Count == 0)
+		// {
+		// 	//if we don't have it saved:
+		// 	//fetch from API
+		// 	games = _igdbService.GetGamesFiltered(name);
+		// 	//save to our database:
+		// 	foreach(Game game in games)
+		// 	{
+		// 		_gameRepository.NewGame(game);
+		// 	}
+		// }
 		//return games either way
 		return games;
 	}

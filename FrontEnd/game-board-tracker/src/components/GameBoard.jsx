@@ -8,6 +8,7 @@ const GameBoard = () => {
     useEffect(() => {
         const fetchGames = async () => {
             try {
+                //Note: if this is supposed to return the user's list of games, it should call backlog{userid}
                 const response = await fetch('/api/user/games');
                 const data = await response.json();
                 setGames(data);
