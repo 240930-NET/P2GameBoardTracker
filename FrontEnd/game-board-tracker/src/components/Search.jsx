@@ -9,7 +9,7 @@ function Search() {
   const handleSearch = async (term) => {
     setSearchTerm(term);
     try {
-      const response = await fetch(`http://localhost:5013/GetGamesByName/${encodeURIComponent(term)}`);
+      const response = await fetch(`https://localhost:5014/GetGamesByName/${encodeURIComponent(term)}`)
       console.log('response', response);
       if (!response.ok) {
         throw new Error('Network response was not ok');

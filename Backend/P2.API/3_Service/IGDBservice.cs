@@ -57,8 +57,9 @@ public class IGDBService : IIGDBService {
     /**
     * Should find 10 games that match the string + any genres or platforms they want to filter by
     * (number is low for testing purposes for now, once we're sure it works properly we can increase it)
+    * TODO: add a exclude id  = (id comma separated list)
     */
-    public List<Game> GetGamesFiltered(string name, List<int>? genres = null, List<int>? platforms = null, int limit = 1)
+    public List<Game> GetGamesFiltered(string name, List<Game> excludeGames, List<int>? genres = null, List<int>? platforms = null, int limit = 5)
     {
         GetIgdbAccessToken();
         _httpClient.DefaultRequestHeaders.Clear();
@@ -74,7 +75,6 @@ public class IGDBService : IIGDBService {
 
         string rawString = $"fields id, name, summary, total_rating; limit {limit}; search \"{name}\"";
         bool genresFiltered = false;
-
         //UNCOMMENT CODE BELOW ONCE GENRE AND/OR PLATFORM MODELS ARE CREATED
         //append to raw string if the list of genreids is not empty or null
         //have boolean to show this has been applied
@@ -105,8 +105,12 @@ public class IGDBService : IIGDBService {
         response.EnsureSuccessStatusCode();
         var jsonString = response.Content.ReadAsStringAsync().Result;
         var games = JsonSerializer.Deserialize<List<Game>>(jsonString);
+        //gets a list of all the ids we should exclude
+        var excludeGameIds = excludeGames.Select(g => g.GameId).ToList();
+        //filters the results only by games we don't already have in our database
+        var filteredGames = games.Where(game => !excludeGameIds.Contains(game.GameId)).ToList();
         //patch every single game to set image url?
-        foreach(Game game in games)
+        foreach(Game game in filteredGames)
         {
             game.ImageURL = getImageUrl(game.GameId);
             //UNCOMMENT CODE BELOW ONCE GENRE AND/OR PLATFORM MODELS ARE CREATED
