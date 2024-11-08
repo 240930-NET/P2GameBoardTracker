@@ -54,7 +54,7 @@ jobs:
         run: ls -R "./myapp"  # Confirm downloaded artifact location
 
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v1.4.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
