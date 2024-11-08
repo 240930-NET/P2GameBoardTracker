@@ -10,11 +10,6 @@ const GameCard = ({ game, onDelete }) => {
     setIsFlipped(!isFlipped);
   };
 
-  // Truncate description to 100 characters
-  const truncateDescription = (text, limit) => {
-    return text.length > limit ? text.substring(0, limit) + "..." : text;
-  };
-
   // Handle delete button click with confirmation step
   const handleDeleteClick = (e) => {
     e.stopPropagation(); // Prevents flip when delete button is clicked
@@ -54,10 +49,13 @@ const GameCard = ({ game, onDelete }) => {
           </button>
         </div>
 
-        {/* Back side of the card with name, truncated description, and rating */}
+        {/* Back side of the card with scrollable description */}
         <div className="card-back">
           <h3>{game.Name}</h3>
-          <p>{truncateDescription(game.Description, 200)}</p>
+          <div className="scrollable-content">
+            <p>{game.Description}</p>{" "}
+            {/* Full description without truncation */}
+          </div>
           <p>
             <strong>Rating:</strong> {game.Rating}
           </p>
