@@ -42,17 +42,17 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write 
+      contents: read
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
-      # Check if downloaded files exist before deploying
+
       - name: Check downloaded files
-        run: ls -R "./"  # Adjust based on where your artifact is downloaded
-      
+        run: ls -R "./myapp"  # Confirm downloaded artifact location
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -60,6 +60,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          auth-type: sp
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -67,4 +68,4 @@ jobs:
         with:
           app-name: 'GameBoardTracker'
           slot-name: 'Production'
-          package: './.net-app'  # Ensure this points to where files are located after download.
+          package: './myapp'
