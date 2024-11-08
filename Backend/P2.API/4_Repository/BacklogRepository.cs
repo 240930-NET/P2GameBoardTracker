@@ -21,13 +21,15 @@ public class BacklogRepository : IBacklogRepository
             (backlog, game) => new
             {
                 //whatever new details added for the backlog and game should be added here as well
-                gameId = game.GameId,
-                userId = backlog.UserId,
-                gameName = game.Name,
-                gameDescription = game.Description, 
+                GameId = game.GameId,
+                UserId = backlog.UserId,
+                Name = game.Name,
+                Description = game.Description,
+                ImageURL = game.ImageURL,
+                Rating = game.Rating, 
                 completionStatus = backlog.Completed,
                 completionDate = backlog.CompletionDate
-            }).Where(x => x.gameId == gameId && x.userId == id).FirstOrDefault();
+            }).Where(x => x.GameId == gameId && x.UserId == id).FirstOrDefault();
     }
     /**
     * Finds a user's backlog using user id
@@ -46,7 +48,7 @@ public class BacklogRepository : IBacklogRepository
                 GameId = game.GameId,
                 Name = game.Name,
                 Description = game.Description,
-                ImageUrl = game.ImageURL,
+                ImageURL = game.ImageURL,
                 Rating = game.Rating, 
                 completionStatus = backlog.Completed,
                 completionDate = backlog.CompletionDate

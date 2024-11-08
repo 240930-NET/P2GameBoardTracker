@@ -14,7 +14,7 @@ const GameCard = ({ game, onDelete }) => {
   const handleDeleteClick = (e) => {
     e.stopPropagation(); // Prevents flip when delete button is clicked
     if (isConfirming) {
-      onDelete(game.GameId); // Confirm deletion on second click
+      onDelete(game.gameId); // Confirm deletion on second click
       setIsConfirming(false); // Reset to initial state
     } else {
       setIsConfirming(true); // Expand button on first click
@@ -36,8 +36,8 @@ const GameCard = ({ game, onDelete }) => {
         {/* Front side of the card */}
         <div className="card-front">
           <img
-            src={game.ImageUrl}
-            alt={`${game.Name} cover`}
+            src={game.imageURL}
+            alt={`${game.name} cover`}
             className="game-image"
           />
           <button
@@ -51,13 +51,13 @@ const GameCard = ({ game, onDelete }) => {
 
         {/* Back side of the card with scrollable description */}
         <div className="card-back">
-          <h3>{game.Name}</h3>
+          <h3>{game.name}</h3>
           <div className="scrollable-content">
-            <p>{game.Description}</p>{" "}
+            <p>{game.description}</p>{" "}
             {/* Full description without truncation */}
           </div>
           <p>
-            <strong>Rating:</strong> {game.Rating}
+            <strong>Rating:</strong> {Math.round(game.rating * 10) / 10}
           </p>
         </div>
       </div>
