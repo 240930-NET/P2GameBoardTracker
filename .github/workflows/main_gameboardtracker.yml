@@ -54,9 +54,9 @@ jobs:
         run: ls -R "./myapp"  # Confirm downloaded artifact location
 
       - name: Login to Azure
-        uses: azure/login@v1.4.0
+        uses: azure/login@v2
         with:
-          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}"}'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
          
 
       - name: Deploy to Azure Web App
@@ -66,3 +66,5 @@ jobs:
           app-name: 'GameBoardTracker'
           slot-name: 'Production'
           package: './myapp'
+
+
