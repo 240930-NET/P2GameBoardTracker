@@ -4,6 +4,7 @@ import './styles/App.css';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import Profile from './components/Profile';
+import GameBoard from './components/GameBoard';
 import GameDetails from './components/GameDetails';
 // import SearchFilter from './components/SearchFilter';
 import Search from './components/Search';
