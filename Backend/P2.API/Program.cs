@@ -79,34 +79,30 @@ builder.Services.AddAuthentication("CustomCookieAuth")
 	});
 
 var app = builder.Build();
-// got rid of swagger
 
-// again testing testing
-
-// tis a test
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2GameBoardTracker API v1"));
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2GameBoardTracker API v1"));
 }
 else
 {
-	app.UseHsts();
+    app.UseHsts();
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseDefaultFiles();
+app.UseRouting();
 app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Use session
 app.UseSession();
-
-// Redirect root URL to Swagger UI
-app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
 
-
+// Remove or modify this line if you want to serve your React app from the root
+// app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
