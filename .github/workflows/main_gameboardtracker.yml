@@ -67,4 +67,4 @@ jobs:
         with:
           app-name: 'GameBoardTracker'
           slot-name: 'Production'
-          package: './'  # This assumes the artifact is downloaded to the current directory
+          package: '${{env.DOTNET_ROOT}}/myapp'  # Ensure this points to where files are located after download.
